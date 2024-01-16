@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import ChatBubbles from './ChatBubbles'
 import axios from 'axios'
 import Dashboard from '../Dashboard'
+import ReXLogo from '../Pics/radical_x_logo.png'
 
 const getOpenAIResponse = async (userInput) => {
   try {
@@ -89,9 +90,9 @@ function Chat() {
   return (
     <div className='flex flex-col h-screen'>
       <Dashboard />
-
       <div className='flex flex-col flex-grow overflow-auto'>
         <div className='flex-1 p-10 overflow-auto'>
+      <img className="h-24 w-24 flex-none rounded-full bg-gray-50" src={ReXLogo} alt="" />
           {messages.map((message) => (<>
             <ChatBubbles message={message.message} type={message.type} />
           </>

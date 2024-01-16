@@ -3,6 +3,7 @@ import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import { useLocation, useNavigate } from 'react-router-dom'
+import ReXLogo from './Pics/radical_x_logo.png'
 
 
 function classNames(...classes) {
@@ -26,6 +27,19 @@ function Dashboard({ isHome = false, setEditMode, CurrEditMode}) {
         setEditMode(!CurrEditMode);
     }
 
+    const goBack = () => {
+        const currentPage = window.location.href;
+        if (currentPage === 'http://localhost:3000/chat') {
+            navigate('/chatlisthistory')
+        }
+        else if (currentPage === 'http://localhost:3000/chatlisthistory') {
+            navigate('/')
+        }
+        else if (currentPage === 'http://localhost:3000/activity') {
+            navigate('/chatlisthistory')
+        }
+    }
+
     return (
         <Disclosure as="nav" className="bg-gray-800">
             <>
@@ -38,7 +52,7 @@ function Dashboard({ isHome = false, setEditMode, CurrEditMode}) {
                                 {!isHome &&
                                     <button
                                         className="h-auto w-auto p-2 rounded-md hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900"
-                                        onClick={() => window.history.back()}
+                                        onClick={goBack}
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="w-6 h-6">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
@@ -68,14 +82,14 @@ function Dashboard({ isHome = false, setEditMode, CurrEditMode}) {
 
 
                         <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                            <button
+                            {/* <button
                                 type="button"
                                 className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                             >
                                 <span className="absolute -inset-1.5" />
                                 <span className="sr-only">Search</span>
                                 <MagnifyingGlassIcon className="h-6 w-6" aria-hidden="true" />
-                            </button>
+                            </button> */}
 
                             {/* Profile dropdown */}
                             <Menu as="div" className="relative ml-3">
@@ -85,7 +99,7 @@ function Dashboard({ isHome = false, setEditMode, CurrEditMode}) {
                                         <span className="sr-only">Open user menu</span>
                                         <img
                                             className="h-8 w-8 rounded-full"
-                                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                            src={ReXLogo}
                                             alt=""
                                         />
                                     </Menu.Button>
@@ -113,8 +127,9 @@ function Dashboard({ isHome = false, setEditMode, CurrEditMode}) {
                                         <Menu.Item>
                                             {({ active }) => (
                                                 <button
-                                                    className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700 w-full text-left')}
+                                                    className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700 w-full text-left disabled:opacity-50')}
                                                     onClick={EditMode}
+                                                    disabled={window.location.href !== 'http://localhost:3000/chatlisthistory'}
                                                 >
                                                     Edit Chats
                                                 </button>
@@ -122,12 +137,13 @@ function Dashboard({ isHome = false, setEditMode, CurrEditMode}) {
                                         </Menu.Item>
                                         <Menu.Item>
                                             {({ active }) => (
-                                                <a
-                                                    href="/"
-                                                    className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                                                <button
+                                                    className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700 w-full text-left disabled:opacity-50')}
+                                                    onClick={() => window.location.href = 'http://localhost:3000/chatlisthistory'}
+                                                    disabled={window.location.href !== 'http://localhost:3000/chat'}
                                                 >
                                                     End Session
-                                                </a>
+                                                </button>
                                             )}
                                         </Menu.Item>
                                     </Menu.Items>

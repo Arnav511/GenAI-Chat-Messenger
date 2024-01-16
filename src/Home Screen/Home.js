@@ -10,7 +10,7 @@ function Home() {
       <Dashboard isHome='true'/>
 
 
-      <div style={{ backgroundImage: `url(${bgImg})`, backgroundSize: '100% 80vh', backgroundPosition: 'center', height: '60vh', width: '100%', }} className="h-3/5">
+      <div style={{ backgroundImage: `url(${bgImg})`, backgroundSize: 'contain', backgroundPosition: 'center', height: '100vh', width: '100%', backgroundRepeat: 'no-repeat' }} >
       </div>
       <div className=" justify-end px-6 py-12 lg:px-8">
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-3xl">
