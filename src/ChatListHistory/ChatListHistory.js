@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import Dashboard from '../Dashboard'
 import { Link, useNavigate } from 'react-router-dom'
 import { Fragment, useRef, useState } from 'react'
@@ -25,15 +25,16 @@ function ChatListHistory() {
 
     const [titleToDelete, setTitleToDelete] = useState('');
 
-    const onDeleteBttnPress = (e) => {
-        const t = e.currentTarget.id.slice(1);
+    const onDeleteBttnPress = useCallback((e) => {
+        e.preventDefault();
+        const t = e.currentTarget.id.slice(2);
         setTitleToDelete(t);
         setdeleteMenu(true);
-    }
+    }, []);
 
     const DeleteChat = (e) => {
         e.preventDefault();
-        const chatToDelete = chats.find(chat => chat.id === titleToDelete);
+        const chatToDelete = chats.find(chat => chat.title === titleToDelete);
         const index = chats.indexOf(chatToDelete);
         chats.splice(index, 1);
         setChats(chats);
