@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import ChatBubbles from './ChatBubbles'
 import axios from 'axios'
 import Dashboard from '../Dashboard'
@@ -28,6 +28,15 @@ const getOpenAIResponse = async (userInput) => {
 
 function Chat() {
 
+  const chatContainerRef = useRef(null);
+
+  // Function to scroll to the bottom
+  const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  };
+
   const [messages, setMessages] = React.useState([]);
 
   const [chats, setChats] = React.useState([]);
@@ -41,12 +50,13 @@ function Chat() {
 
     const storedChats = JSON.parse(localStorage.getItem('chats'));
     setChats(storedChats);
+    scrollToBottom();
   }, []);
 
   useEffect(() => {
     localStorage.setItem('messages', JSON.stringify(messages));
     console.log("messages" + localStorage.getItem('messages'));
-
+    scrollToBottom();
   }, [messages]);
 
   const onSendMessage = async (e) => {
@@ -77,6 +87,7 @@ function Chat() {
       });
       localStorage.setItem('chats', JSON.stringify(updatedChats));
       setChats(updatedChats);
+      scrollToBottom();
     }
   }
 
@@ -91,8 +102,8 @@ function Chat() {
     <div className='flex flex-col h-screen'>
       <Dashboard />
       <div className='flex flex-col flex-grow overflow-auto'>
-        <div className='flex-1 p-10 overflow-auto'>
-      <img className="h-24 w-24 flex-none rounded-full bg-gray-50" src={ReXLogo} alt="" />
+        <div className='flex-1 p-10 overflow-auto' ref={chatContainerRef}>
+          <img className="h-24 w-24 flex-none rounded-full bg-gray-50" src={ReXLogo} alt="" />
           {messages.map((message) => (<>
             <ChatBubbles message={message.message} type={message.type} />
           </>
