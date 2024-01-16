@@ -29,8 +29,6 @@ const getOpenAIResponse = async (userInput) => {
 function Chat() {
 
   const chatContainerRef = useRef(null);
-
-  // Function to scroll to the bottom
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;

@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Disclosure, Menu, Transition, Dialog } from '@headlessui/react'
+import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import ReXLogo from './Pics/radical_x_logo.png'
 
 
@@ -15,10 +15,19 @@ const navigation = [
 ]
 
 
-function Dashboard({ isHome = false, setEditMode, CurrEditMode}) {
+function Dashboard({ isHome = false, setEditMode, CurrEditMode }) {
 
     const location = useLocation();
     const navigate = useNavigate();
+
+    const cancelButtonRef = useRef(null)
+
+    const [open, setOpen] = useState(false)
+
+    const onEndSession = () => {
+        setOpen(false);
+        window.location.href = 'http://localhost:3000/chatlisthistory';
+    }
 
     const EditMode = () => {
         if (location.pathname === '/chatlisthistory') {
@@ -139,7 +148,8 @@ function Dashboard({ isHome = false, setEditMode, CurrEditMode}) {
                                             {({ active }) => (
                                                 <button
                                                     className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700 w-full text-left disabled:opacity-50')}
-                                                    onClick={() => window.location.href = 'http://localhost:3000/chatlisthistory'}
+                                                    // onClick={() => window.location.href = 'http://localhost:3000/chatlisthistory'}
+                                                    onClick={() => setOpen(true)}
                                                     disabled={window.location.href !== 'http://localhost:3000/chat'}
                                                 >
                                                     End Session
@@ -172,6 +182,79 @@ function Dashboard({ isHome = false, setEditMode, CurrEditMode}) {
                     </div>
                 </Disclosure.Panel>
             </>
+
+
+            <Transition.Root show={open} as={Fragment}>
+                <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
+                    <Transition.Child
+                        as={Fragment}
+                        enter="ease-out duration-300"
+                        enterFrom="opacity-0"
+                        enterTo="opacity-100"
+                        leave="ease-in duration-200"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
+                    >
+                        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                    </Transition.Child>
+
+                    <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+                        <div className="flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0">
+                            <Transition.Child
+                                as={Fragment}
+                                enter="ease-out duration-300"
+                                enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                                enterTo="opacity-100 translate-y-0 sm:scale-100"
+                                leave="ease-in duration-200"
+                                leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                                leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            >
+                                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:max-w-lg w-80">
+                                    <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                        <div className="flex flex-col items-center">
+                                            <img
+                                                className="h-40 w-40 rounded-full"
+                                                src={ReXLogo}
+                                                alt=""
+                                            />
+                                            <div className="mt-8 text-center">
+                                                <Dialog.Title as="h1" className="text-2xl font-semibold leading-6 text-gray-900">
+                                                    End Session
+                                                </Dialog.Title>
+                                                <div className="mt-2">
+                                                    <p className="text-sm text-gray-500">
+                                                        Are you sure you want to end your current session?
+                                                    </p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="bg-gray-50 px-4 py-3 flex flex-col sm:px-6">
+                                        <Link to='/chat'>
+                                            <button
+                                                type="button"
+                                                className="inline-flex w-full justify-center rounded-full bg-indigo-600 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 disabled:bg-gray-300 disabled:cursor-not-allowed p-4 m-1"
+                                                onClick={onEndSession}
+                                            >
+                                                Yes, End Session
+                                            </button>
+                                        </Link>
+                                        <button
+                                            type="button"
+                                            className="mt-3 inline-flex w-full justify-center rounded-full bg-indigo-100 text-sm font-semibold text-indigo-600 shadow-sm ring-1 ring-inset ring-indigo-100 hover:bg-indigo-50 p-4 m-1"
+                                            onClick={() => setOpen(false)}
+                                            ref={cancelButtonRef}
+                                        >
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </Dialog.Panel>
+                            </Transition.Child>
+                        </div>
+                    </div>
+                </Dialog>
+            </Transition.Root>
         </Disclosure>
     )
 }
