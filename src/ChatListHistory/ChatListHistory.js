@@ -83,7 +83,7 @@ function ChatListHistory() {
 
             <h1 className='text-lg px-10 py-3'>Your Chats</h1>
 
-            <div className='flex flex-col flex-grow overflow-auto'>
+            <div className='flex flex-col flex-grow overflow-auto pr-5'>
                 <ul className="divide-y divide-gray-100 px-5">
                     {chats.map((chat) => (
                         <div className="flex flex-row">
